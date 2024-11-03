@@ -80,6 +80,7 @@ jobs:
             echo "Deploying frontend..."
             kubectl set image deployment/frontend frontend-container=${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
             kubectl rollout status deployment/frontend
+            kubectl rollout restart deployment/frontend
           fi
 
           # Deploy backend if built
@@ -87,4 +88,5 @@ jobs:
             echo "Deploying backend..."
             kubectl set image deployment/backend backend-container=${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
             kubectl rollout status deployment/backend
+            kubectl rollout restart deployment/backend
           fi
