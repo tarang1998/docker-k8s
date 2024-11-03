@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -52,7 +54,7 @@ jobs:
 
       - name: Install kubectl
         run: |
-          curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/1.25.7/2022-01-20/bin/linux/amd64/kubectl" # Change version and OS as needed
+          curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/1.30.1/2022-01-20/bin/linux/amd64/kubectl" # Change version and OS as needed
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
