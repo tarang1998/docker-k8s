@@ -7,6 +7,8 @@ on:
     paths:
       - 'doctor-office-frontend/**'
       - 'doctor-office-backend/**'
+  workflow_dispatch:  # Optional: allows manual triggering
+
 
 jobs:
   build:
@@ -56,7 +58,7 @@ jobs:
 
       - name: Install kubectl
         run: |
-          curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/1.30.1/2022-01-20/bin/linux/amd64/kubectl" # Change version and OS as needed
+          curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/1.12.10/2019-08-14/bin/linux/amd64/kubectl" # Change version and OS as needed
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
