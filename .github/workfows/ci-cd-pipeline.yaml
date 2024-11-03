@@ -1,0 +1,84 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main # Adjust to your default branch if necessary
+    paths:
+      - 'doctor-frontend/**'
+      - 'doctor-backend/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker images
+        run: |
+          # Build and push frontend if changed
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-frontend/'; then
+            echo "Building and pushing frontend..."
+            docker build -t ${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest doctor-frontend
+            docker push ${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
+          fi
+
+          # Build and push backend if changed
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-backend/'; then
+            echo "Building and pushing backend..."
+            docker build -t ${{ secrets.ECR_REPOSITORY_BACKEND }}:latest doctor-backend
+            docker push ${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
+          fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install kubectl
+        run: |
+          curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/1.25.7/2022-01-20/bin/linux/amd64/kubectl" # Change version and OS as needed
+          chmod +x ./kubectl
+          sudo mv ./kubectl /usr/local/bin/kubectl
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name your-cluster-name --region ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to EKS
+        run: |
+          # Deploy frontend if built
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-frontend/'; then
+            echo "Deploying frontend..."
+            kubectl set image deployment/frontend-deployment frontend-container=${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
+            kubectl rollout status deployment/frontend-deployment
+          fi
+
+          # Deploy backend if built
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-backend/'; then
+            echo "Deploying backend..."
+            kubectl set image deployment/backend-deployment backend-container=${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
+            kubectl rollout status deployment/backend-deployment
+          fi
