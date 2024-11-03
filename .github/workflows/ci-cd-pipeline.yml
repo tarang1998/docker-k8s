@@ -58,7 +58,7 @@ jobs:
 
       - name: Install kubectl
         run: |
-          curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/1.12.10/2019-08-14/bin/linux/amd64/kubectl" # Change version and OS as needed
+          curl -LO "https://dl.k8s.io/release/v1.30.2/bin/linux/amd64/kubectl" # Change version and OS as needed
           chmod +x ./kubectl
           sudo mv ./kubectl /usr/local/bin/kubectl
 
