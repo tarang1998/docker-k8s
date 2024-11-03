@@ -78,7 +78,7 @@ jobs:
           # Deploy frontend if built
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-office-frontend/'; then
             echo "Deploying frontend..."
-            kubectl set image deployment/frontend frontend-container=${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
+            kubectl set image deployment/frontend frontend=${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
             kubectl rollout status deployment/frontend
             kubectl rollout restart deployment/frontend
           fi
@@ -86,7 +86,7 @@ jobs:
           # Deploy backend if built
           if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-office-backend/'; then
             echo "Deploying backend..."
-            kubectl set image deployment/backend backend-container=${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
+            kubectl set image deployment/backend backend=${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
             kubectl rollout status deployment/backend
             kubectl rollout restart deployment/backend
           fi
