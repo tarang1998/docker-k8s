@@ -5,8 +5,8 @@ on:
     branches:
       - main # Adjust to your default branch if necessary
     paths:
-      - 'doctor-frontend/**'
-      - 'doctor-backend/**'
+      - 'doctor-office-frontend/**'
+      - 'doctor-office-backend/**'
 
 jobs:
   build:
@@ -29,16 +29,16 @@ jobs:
       - name: Build and push Docker images
         run: |
           # Build and push frontend if changed
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-frontend/'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-office-frontend/'; then
             echo "Building and pushing frontend..."
-            docker build -t ${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest doctor-frontend
+            docker build -t ${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest doctor-office-frontend
             docker push ${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
           fi
 
           # Build and push backend if changed
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-backend/'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-office-backend/'; then
             echo "Building and pushing backend..."
-            docker build -t ${{ secrets.ECR_REPOSITORY_BACKEND }}:latest doctor-backend
+            docker build -t ${{ secrets.ECR_REPOSITORY_BACKEND }}:latest doctor-office-backend
             docker push ${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
           fi
 
@@ -70,14 +70,14 @@ jobs:
       - name: Deploy to EKS
         run: |
           # Deploy frontend if built
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-frontend/'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-office-frontend/'; then
             echo "Deploying frontend..."
             kubectl set image deployment/frontend-deployment frontend-container=${{ secrets.ECR_REPOSITORY_FRONTEND }}:latest
             kubectl rollout status deployment/frontend-deployment
           fi
 
           # Deploy backend if built
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-backend/'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^doctor-office-backend/'; then
             echo "Deploying backend..."
             kubectl set image deployment/backend-deployment backend-container=${{ secrets.ECR_REPOSITORY_BACKEND }}:latest
             kubectl rollout status deployment/backend-deployment
