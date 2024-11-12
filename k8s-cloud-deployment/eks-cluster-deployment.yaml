@@ -1,0 +1,42 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: doctor-app-cluster
+  region: us-east-1
+  #version: "1.31" # The version of kubernetes to use  
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.small
+    desiredCapacity: 3
+    minSize: 2
+    maxSize: 5
+    ssh:
+      allow: true
+      publicKeyName : SSHAccess
+
+
+# Define the IAM role for the cluster
+iam:
+  withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: aws-load-balancer-controller
+        namespace: kube-system
+      wellKnownPolicies:
+        awsLoadBalancerController: true
+
+# Add-ons
+addons:
+  - name: aws-ebs-csi-driver 
+    wellKnownPolicies:
+      ebsCSIController: true 
+
+
+
+# Enable CloudWatch logging
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["*"]
+    logRetentionInDays: 7 
