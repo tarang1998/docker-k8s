@@ -2,19 +2,22 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-  name: doctor-app-cluster
+  name: doctorcluster
   region: us-east-1
-  #version: "1.31" # The version of kubernetes to use  
+  version: "1.31" # The version of kubernetes to use  
 
-nodeGroups:
+managedNodeGroups:
   - name: ng-1
     instanceType: t3.small
     desiredCapacity: 3
+    volumeSize: 20 
     minSize: 2
     maxSize: 5
     ssh:
       allow: true
-      publicKeyName : SSHAccess
+      publicKeyName : SSHAccess # The access key should be present in the same region as the EKS Cluster
+    privateNetworking: true  # Ensures nodes are in private subnets
+
 
 
 # Define the IAM role for the cluster
