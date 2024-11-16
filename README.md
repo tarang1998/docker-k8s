@@ -1,7 +1,10 @@
 # Kubernetes and Docker
 
-## To run the frontend, backend and mongo containers locally using docker 
+## Creating Docker Images and running the containers locally  
+- To run the frontend,backend and mongo services 
+```
 - docker-compose up
+```
 - List all the running containers : docker ps -a
 
 ## Setting up a local kubernetes cluster before deploying it to the cloud 
@@ -35,7 +38,7 @@ minikube service frontend --url
 eksctl create cluster --name doctorcluster --region us-east-1 --nodegroup-name standard-nodes --node-type t3.small --nodes 3 --nodes-min 2 --nodes-max 5 --managed
 ```
 
-- Alternatively, could use the following command with the configuration file : (eks-cluster-deployment.yaml)[./k8s-cloud-deployment/eks-cluster-deployment]
+- Alternatively, could use the following command with the configuration file : [eks-cluster-deployment.yaml](./k8s-cloud-deployment/eks-cluster-deployment.yaml)
 ```
 eksctl create cluster -f eks-cluster-deployment.yaml
 ```
@@ -45,7 +48,17 @@ eksctl create cluster -f eks-cluster-deployment.yaml
 eksctl get cluster
 ```
 
+- Configure kubectl to point to the eks 
+```
+aws eks --region us-east-1 update-kubeconfig --name doctorcluster
+```
+
+- Check the cluster nodes 
+```
+kubectl get nodes
+```
+
 - Delete the cluster along with all the associated resources 
 ```
-eksctl delete cluster -f eks-cluster.yaml
+eksctl delete cluster -f eks-cluster-deployment.yaml
 ```

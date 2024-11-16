@@ -6,8 +6,33 @@ metadata:
   region: us-east-1
   version: "1.31" # The version of kubernetes to use  
 
+# To provide custom VPC Configurations 
+# vpc:
+#   id : "" #optional
+#   cidr: "" #optional 
+#   nat:
+#     gateway: HighlyAvailable
+#   subnets:
+#     public: 
+#       us-east-1a:
+#         id:
+#         cidr: "" #optional 
+#       us-east-1b:
+#         id:
+#         cidr: "" #optional 
+    
+#     private:
+#       us-east-1a: 
+#         id:
+#         cidr: "" #optional
+#       us-east-1b:
+#         id:
+#         cidr: "" #optional
+   
+
 managedNodeGroups:
   - name: ng-1
+    labels: { role: workers }
     instanceType: t3.small
     desiredCapacity: 3
     volumeSize: 20 
@@ -17,18 +42,21 @@ managedNodeGroups:
       allow: true
       publicKeyName : SSHAccess # The access key should be present in the same region as the EKS Cluster
     privateNetworking: true  # Ensures nodes are in private subnets
+    # subnets:
+    #   - us-east-1a
+    #   - us-east-1b
 
 
 
-# Define the IAM role for the cluster
-iam:
-  withOIDC: true
-  serviceAccounts:
-    - metadata:
-        name: aws-load-balancer-controller
-        namespace: kube-system
-      wellKnownPolicies:
-        awsLoadBalancerController: true
+# # Define the IAM role for the cluster
+# iam:
+#   withOIDC: true
+#   serviceAccounts:
+#     - metadata:
+#         name: aws-load-balancer-controller
+#         namespace: kube-system
+#       wellKnownPolicies:
+#         awsLoadBalancerController: true
 
 # Add-ons
 addons:
