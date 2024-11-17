@@ -130,6 +130,8 @@ aws eks --region us-east-1 update-kubeconfig --name doctorcluster
 kubectl get nodes
 ```
 
+### Deploy Kubernetes configuration to EKS
+
 - Install the Metrics Server. The Metrics Server collects resource usage metrics (like CPU and memory) and provides them to the HorizontalPodAutoscaler for autoscaling.
 ```
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
@@ -140,7 +142,9 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 kubectl get pods -n kube-system
 ```
 
-- Delete the cluster along with all the associated resources 
+### Clean Up 
+
+- To Delete the cluster along with all the associated resources 
 ```
 eksctl delete cluster -f eks-cluster-deployment.yaml
 ```
