@@ -11,7 +11,7 @@ metadata:
 #   id : "" #optional
 #   cidr: "" #optional 
 #   nat:
-#     gateway: HighlyAvailable
+#     gateway: HighlyAvailable # Building a NAT in each availabiliy zone
 #   subnets:
 #     public: 
 #       us-east-1a:
