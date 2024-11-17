@@ -56,16 +56,6 @@ docker push tarangnair/mongo:latest
 
 ### Apply Kubernetes configuration and access the application
 
-- Install the Metrics Server. The Metrics Server collects resource usage metrics (like CPU and memory) and provides them to the HorizontalPodAutoscaler.
-```
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-```
-
-- Check if the Metrics Server Pod is running
-```
-kubectl get pods -n kube-system
-```
-
 - Apply Kubernetes configuration defined in the following yaml files.
 ```
 kubectl apply -f mongo-deployment.yaml
@@ -93,13 +83,34 @@ minikube dasboard
 minikube stop
 ```
 
-## Deploying the application to cloud 
-- Setting up the EKS Cluster on AWS with eksctl
+## Deploying the application to cloud - AWS 
+
+### Current Architecture 
+- [AWS Architecture](https://lucid.app/lucidchart/35c9d803-957a-4b4c-aa84-ef9f496c27fd/edit?invitationId=inv_546543de-f751-459a-9f7d-bc028998cef7)
+
+### Push Docker images to Amazon Elastic Container Registry in AWS 
+
+- After creating the ECR repositories in AWS and configuring the AWS CLI, authenticate docker to ECR
 ```
-eksctl create cluster --name doctorcluster --region us-east-1 --nodegroup-name standard-nodes --node-type t3.small --nodes 3 --nodes-min 2 --nodes-max 5 --managed
+aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<your-region>.amazonaws.com
 ```
 
-- Alternatively, could use the following command with the configuration file : [eks-cluster-deployment.yaml](./k8s-cloud-deployment/eks-cluster-deployment.yaml)
+- Tag the docker images 
+```
+docker tag dockerproject-frontend <frontendRepositoryUri>:latest
+docker tag dockerproject-backend <backendRepositoryUri>:latest
+```
+
+- Push the images to the remote repository
+```
+docker push <frontendRepositoryUri>:latest
+docker push <backendRepositoryUri>:latest
+```
+
+### Setting up the EKS Cluster
+
+
+- Navigate to the directory 'k8s-cloud-deployment', and use the command: 
 ```
 eksctl create cluster -f eks-cluster-deployment.yaml
 ```
@@ -119,7 +130,18 @@ aws eks --region us-east-1 update-kubeconfig --name doctorcluster
 kubectl get nodes
 ```
 
+- Install the Metrics Server. The Metrics Server collects resource usage metrics (like CPU and memory) and provides them to the HorizontalPodAutoscaler for autoscaling.
+```
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+```
+
+- Check if the Metrics Server Pod is running
+```
+kubectl get pods -n kube-system
+```
+
 - Delete the cluster along with all the associated resources 
 ```
 eksctl delete cluster -f eks-cluster-deployment.yaml
 ```
+
