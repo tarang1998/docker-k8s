@@ -7,7 +7,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('http://ab15d981a79164aef84372747d64db51-1507314633.us-east-1.elb.amazonaws.com/appointments')
+    fetch('http://backend:80/appointments')
       .then(res => res.json())
       .then(data => setAppointments(data));
   }, []);
@@ -15,7 +15,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://ab15d981a79164aef84372747d64db51-1507314633.us-east-1.elb.amazonaws.com/appointments', {
+    fetch('http://backend:80/appointments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
