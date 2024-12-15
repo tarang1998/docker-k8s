@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet #To manage stateful applications like Databases, ensures stable network identity and persistant storage
+metadata:
+  name: mongo # The StatefulSet name is mongo. Pods created by this StatefulSet will be named mongo-0, mongo-1, and mongo-2 (based on the replicas).
+spec:  
+  serviceName: mongo # Ties it to a headless Service
+  replicas: 3 # Specifying 3 mongo pods should be running 
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:latest
+          command: 
+            - mongod
+            - "--bind_ip"
+            - "0.0.0.0"
+            - "--replSet"
+            - "rs0"  # Replica sets allow MongoDB to replicate data across multiple pods for high availability.
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongo-data  # Refers to the Persistent Volume defined in volumeClaimTemplates.
+              mountPath: /data/db
+
+  

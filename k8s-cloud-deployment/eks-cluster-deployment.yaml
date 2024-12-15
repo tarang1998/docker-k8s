@@ -11,7 +11,7 @@ metadata:
 #   id : "" #optional
 #   cidr: "" #optional 
 #   nat:
-#     gateway: HighlyAvailable # Building a NAT in each availabiliy zone
+#     gateway: HighlyAvailable # Building a NAT in each availability zone
 #   subnets:
 #     public: 
 #       us-east-1a:
@@ -42,30 +42,18 @@ managedNodeGroups:
       allow: true
       publicKeyName : SSH1 # The access key should be present in the same region as the EKS Cluster
     privateNetworking: true  # Ensures nodes are in private subnets
-    # subnets:
-    #   - us-east-1a
-    #   - us-east-1b
+    subnets:
+      - us-east-1a
+      - us-east-1b
 
 
 
 # Define the IAM role for the cluster
 iam:
   withOIDC: true
-  # serviceAccounts:
-  #   - metadata:
-  #       name: aws-load-balancer-controller
-  #       namespace: kube-system
-  #     wellKnownPolicies:
-  #       awsLoadBalancerController: true
 
   
 iamIdentityMappings:
-  # - arn: arn:aws:iam::448049797968:role/EKSClientRole
-  #   groups:
-  #     - system:masters
-  #   username: admin
-  #   noDuplicateARNs: true
-
   - arn: arn:aws:iam::448049797968:user/root  
     groups:
       - system:masters 

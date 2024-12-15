@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo # The Service is named mongo. Other resources (like the StatefulSet resource) reference this name for connectivity.
+  labels:
+    name: mongo
+spec:
+  ports:
+    - port: 27017 # Exposes the Service on port 27017 for communication within the cluster.
+      targetPort: 27017 # Maps the Service's port to the MongoDB container’s port 27017.
+  clusterIP: None # Configures this Service as a headless Service. No load balancing or single cluster IP is provided.Instead, it directly maps each StatefulSet pod to a unique DNS record (e.g., mongo-0.mongo, mongo-1.mongo).
+  selector:
+    app: mongo # Matches pods labeled with app: mongo. Ensures only the MongoDB StatefulSet pods are associated with this Service.
+
+
+# This headless Service is specifically designed for MongoDB's replica set configuration, each pod needs its own stable DNS entry for communication.
+
+# For a StatefulSet with 3 replicas:
+# Pod mongo-0 is accessible via DNS name mongo-0.mongo.
+# Pod mongo-1 is accessible via DNS name mongo-1.mongo.
+# Pod mongo-2 is accessible via DNS name mongo-2.mongo.
+
+# MongoDB replica set members use these stable DNS entries to replicate data and elect a primary.
+
+
+
+
+
+
