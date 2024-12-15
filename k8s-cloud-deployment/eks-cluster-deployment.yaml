@@ -40,7 +40,7 @@ managedNodeGroups:
     maxSize: 5
     ssh:
       allow: true
-      publicKeyName : SSHAccess # The access key should be present in the same region as the EKS Cluster
+      publicKeyName : SSH1 # The access key should be present in the same region as the EKS Cluster
     privateNetworking: true  # Ensures nodes are in private subnets
     # subnets:
     #   - us-east-1a
@@ -48,22 +48,44 @@ managedNodeGroups:
 
 
 
-# # Define the IAM role for the cluster
-# iam:
-#   withOIDC: true
-#   serviceAccounts:
-#     - metadata:
-#         name: aws-load-balancer-controller
-#         namespace: kube-system
-#       wellKnownPolicies:
-#         awsLoadBalancerController: true
+# Define the IAM role for the cluster
+iam:
+  withOIDC: true
+  # serviceAccounts:
+  #   - metadata:
+  #       name: aws-load-balancer-controller
+  #       namespace: kube-system
+  #     wellKnownPolicies:
+  #       awsLoadBalancerController: true
+
+  
+iamIdentityMappings:
+  # - arn: arn:aws:iam::448049797968:role/EKSClientRole
+  #   groups:
+  #     - system:masters
+  #   username: admin
+  #   noDuplicateARNs: true
+
+  - arn: arn:aws:iam::448049797968:user/root  
+    groups:
+      - system:masters 
+    username: root
+    noDuplicateARNs: true
+
+  - arn: arn:aws:iam::448049797968:user/cli-user  
+    groups:
+      - system:masters 
+    username: cli-root-user
+    noDuplicateARNs: true
+
+  # - account: "448049797968" 
+
 
 # Add-ons
 addons:
   - name: aws-ebs-csi-driver 
     wellKnownPolicies:
       ebsCSIController: true 
-
 
 
 # Enable CloudWatch logging

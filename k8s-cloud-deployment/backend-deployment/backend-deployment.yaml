@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 448049797968.dkr.ecr.us-east-1.amazonaws.com/doctorapp/backend
+        image: tarangnair/backend:latest
         ports:
           - containerPort: 3000
         imagePullPolicy: Always
