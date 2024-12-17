@@ -27,5 +27,13 @@ spec:
           volumeMounts:
             - name: mongo-data  # Refers to the Persistent Volume defined in volumeClaimTemplates.
               mountPath: /data/db
-
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+        storageClassName: ebs-sc
   

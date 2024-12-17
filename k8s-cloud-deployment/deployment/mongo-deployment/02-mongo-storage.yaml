@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc # PersistentVolumeClaims (PVCs), can reference this StorageClass by name to request storage.
+provisioner: ebs.csi.aws.com  # Indicates that the Amazon EBS Container Storage Interface (CSI) driver will handle the creation of EBS volumes.
+volumeBindingMode: WaitForFirstConsumer # Specifies when the EBS volume is provisioned and bound to a pod.
+# WaitForFirstConsumer mode:
+# The volume is not provisioned immediately when a PVC is created.
+# The volume is only provisioned after a pod using the PVC is scheduled on a specific node.
+# This ensures the volume is created in the same availability zone as the pod.
