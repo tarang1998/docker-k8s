@@ -132,6 +132,11 @@ kubectl get nodes
 
 ### Deploy Kubernetes configuration to EKS
 
+- Deploy the frontend, backend and mongo kubectl configurations to EKS.
+```
+kubectl apply -f ./k8s-cloud-deployment/deployment --recursive
+```
+
 - Install the Metrics Server. The Metrics Server collects resource usage metrics (like CPU and memory) and provides them to the HorizontalPodAutoscaler for autoscaling.
 ```
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
