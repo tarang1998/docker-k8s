@@ -1,10 +1,19 @@
 # Kubernetes and Docker
 
 ## Creating Docker Images and running the containers locally  
+- Update the .env file in the doctor-office-backend folder
+```
+MONGODB_URL=mongo:27017
+MONGODB_DB_NAME=appointments
+MONGODB_REPLICA_SET=rs0
+ENV=local
+```
+
 - To run the frontend, backend and mongo services locally using docker, run the following command in the project root directory:
 ```
 docker-compose up --build
 ```
+
 - List all the containers: 
 ```
 docker ps -a
@@ -92,16 +101,32 @@ minikube stop
 
 ### Push Docker images to Amazon Elastic Container Registry in AWS 
 
+- Update the .env file in the doctor-office-backend folder
+```
+MONGODB_URL=mongo:27017
+MONGODB_DB_NAME=appointments
+MONGODB_REPLICA_SET=rs0
+ENV=cloud
+```
+
 - After creating the ECR repositories in AWS and configuring the AWS CLI, authenticate docker to ECR
 ```
 aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<your-region>.amazonaws.com
 ```
 
-- Tag the docker images 
-```
-docker tag dockerproject-frontend <frontendRepositoryUri>:latest
-docker tag dockerproject-backend <backendRepositoryUri>:latest
-```
+- Build and tag the docker images.
+
+    - Build the docker image for the front end service
+    ```
+    cd docker-office-frontend
+    docker build -t <frontendRepositoryUri>:latest .
+    ```
+
+    - Build the docker image for the back end service
+    ```
+    cd doctor-office-backend
+    docker build -t <backendRepositoryUri>:latest .
+    ```
 
 - Push the images to the remote repository
 ```
@@ -145,7 +170,7 @@ kubectl apply -f ./k8s-cloud-deployment/deployment --recursive
     
     - Access one of the mongo pods
     ```
-    kubectl exec -it mongo-0 --mongosh
+    kubectl exec -it mongo-0 -- mongosh
     ```
 
     - Initiate the replica set 
@@ -179,9 +204,42 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 kubectl get pods -n kube-system
 ```
 
-### Access the application 
 
-- Access  the frontend of the application using the load balancer created 
+### Load Testing an EKS Deployment for Key Metrics
+- Scope of Work
+    - Latency: Measure the response time under different load conditions.
+    - Throughput: Determine the number of requests processed per second.
+    - Error Rate: Monitor for failed requests or system errors during the tests.
+    - Resource Utilization: Analyze CPU and memory usage on the EKS pods during testing.
+ 
+- Load Testing
+    - Tool Used : Apache JMeter
+
+
+    - Load scenarios:
+        - Light load (e.g., 10 concurrent users).
+
+
+
+            - Medium load (e.g., 50 concurrent users).
+            - Heavy load (e.g., 200+ concurrent users).
+        - Test durations should be sufficient to gather meaningful data (e.g., 10 minutes per scenario).
+
+    - Monitoring and Metrics Collection
+        - Set up monitoring tools, such as Prometheus, Grafana, or AWS CloudWatch, to collect and visualize metrics.
+        - Capture pod-level CPU and memory utilization during load testing.
+
+- Reporting and Analysis
+    - Summarize your findings in a detailed report, including:
+        - Graphs and tables of latency, throughput, error rates, and resource utilization.
+        - Key observations about system behavior under different load conditions.
+        - Recommendations for optimizing the application or cluster configuration based on test results.
+
+- Documentation
+Provide a step-by-step guide to replicate your tests, including:
+Tools and configurations used.
+Kubernetes manifests or Helm charts.
+Load testing scripts and test plans.
 
 ### Clean Up 
 

@@ -1,18 +1,25 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 
-
-
 const app = express();
 app.use(cors());
-
 app.use(express.json());
 
 
-const mongodb_url = process.env.MONGODB_URL || 'mongo:27017'
-mongoose.connect(`mongodb://${mongodb_url}/appointments?replicaSet=rs0`, { useNewUrlParser: true, useUnifiedTopology: true });
+const { MONGODB_URL, MONGODB_DB_NAME, MONGODB_REPLICA_SET, ENV } = process.env;
+let mongoURI = `mongodb://${MONGODB_URL}/${MONGODB_DB_NAME}`;
+
+if (ENV == "cloud") {
+    mongoURI += `?replicaSet=${MONGODB_REPLICA_SET}`;
+}
+
+console.log(mongoURI)
+
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const AppointmentSchema = new mongoose.Schema({

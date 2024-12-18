@@ -47,10 +47,18 @@ managedNodeGroups:
     #   - us-east-1b
 
 
-
 # Define the IAM role for the cluster
 iam:
   withOIDC: true
+  serviceAccounts:
+    - metadata:
+        name: cloudwatch-agent
+        namespace: amazon-cloudwatch
+      roleName: aws-cloudwatch-agent
+      attachPolicyARNs:
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      roleOnly: true # Ensure only the role is created without modifying the default policies
+
 
   
 iamIdentityMappings:
@@ -74,7 +82,8 @@ addons:
   - name: aws-ebs-csi-driver 
     wellKnownPolicies:
       ebsCSIController: true 
-
+  - name: amazon-cloudwatch-observability
+    serviceAccountRoleArn: arn:aws:iam::448049797968:role/aws-cloudwatch-agent
 
 # Enable CloudWatch logging
 cloudWatch:
