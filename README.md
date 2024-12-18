@@ -3,7 +3,7 @@
 ## Creating Docker Images and running the containers locally  
 - To run the frontend, backend and mongo services locally using docker, run the following command in the project root directory:
 ```
-- docker-compose up --build
+docker-compose up --build
 ```
 - List all the containers: 
 ```
@@ -136,6 +136,34 @@ kubectl get nodes
 ```
 kubectl apply -f ./k8s-cloud-deployment/deployment --recursive
 ```
+
+- Now we need to specify a specific mongo pod as the master node and other pods as the slave node
+    
+    - Access one of the mongo pods
+    ```
+    kubectl exec -it mongo-0 --mongosh
+    ```
+
+    - Initiate the replica set 
+    ```
+    rs.initiate(
+        {
+            _id: "rs0",
+            members: [
+                {_id: 0, host:"mongo-0.mongo.default.svc.cluster.local:27017" },
+                {_id: 1, host:"mongo-1.mongo.default.svc.cluster.local:27017" },
+                {_id: 2, host:"mongo-2.mongo.default.svc.cluster.local:27017" },
+            ]
+        }
+    );
+    ```
+
+    - Exit the pod and access it again to check the status using 
+    ```
+    rs.status()
+    ```
+
+    [rs.status()](/screenshots/rs.status.png)
 
 - Install the Metrics Server. The Metrics Server collects resource usage metrics (like CPU and memory) and provides them to the HorizontalPodAutoscaler for autoscaling.
 ```
