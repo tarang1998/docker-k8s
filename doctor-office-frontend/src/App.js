@@ -7,7 +7,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch('http://backend:3000/appointments')
+    fetch('/api/appointments')
       .then(res => res.json())
       .then(data => setAppointments(data));
   }, []);
@@ -15,7 +15,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://backend:3000/appointments', {
+    fetch('/api/appointments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
