@@ -10,6 +10,8 @@ docker-compose up --build
 docker ps -a
 ```
 
+![Running Containers](/screenshots/docker-local-running-containers.png)
+
 - Try accessing the front end at : http://localhost:3001/, backend at : http://localhost:3000/appointments and mongo DB using MongoDBCompass.
 
 ## Setting up a local kubernetes cluster before deploying it to the cloud 
@@ -163,7 +165,7 @@ kubectl apply -f ./k8s-cloud-deployment/deployment --recursive
     rs.status()
     ```
 
-    [rs.status()](/screenshots/rs.status.png)
+    ![rs.status()](/screenshots/rs.status.png)
 
 - Install the Metrics Server. The Metrics Server collects resource usage metrics (like CPU and memory) and provides them to the HorizontalPodAutoscaler for autoscaling.
 ```
