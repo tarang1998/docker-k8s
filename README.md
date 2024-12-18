@@ -109,6 +109,8 @@ docker push <frontendRepositoryUri>:latest
 docker push <backendRepositoryUri>:latest
 ```
 
+- Update the frontend and backend deployment config files specifying the correct image path
+
 ### Setting up the EKS Cluster
 
 
@@ -176,6 +178,10 @@ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/late
 ```
 kubectl get pods -n kube-system
 ```
+
+### Access the application 
+
+- Access  the frontend of the application using the load balancer created 
 
 ### Clean Up 
 

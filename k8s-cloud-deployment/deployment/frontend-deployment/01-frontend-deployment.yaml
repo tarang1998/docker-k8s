@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: tarangnair/frontend:latest
+        image: 448049797968.dkr.ecr.us-east-1.amazonaws.com/doctorapp/frontend:latest
         ports:
           - containerPort: 3001
         imagePullPolicy: Always

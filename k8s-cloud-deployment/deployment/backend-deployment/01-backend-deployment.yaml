@@ -14,9 +14,12 @@ spec:
     spec:
       containers:
       - name: backend
-        image: tarangnair/backend:latest
+        image: 448049797968.dkr.ecr.us-east-1.amazonaws.com/doctorapp/backend:latest
         ports:
           - containerPort: 3000
+        env:
+        - name: MONGODB_URL
+          value: "mongo-0.mongo.default.svc.cluster.local,mongo-1.mongo.default.svc.cluster.local,mongo-2.mongo.default.svc.cluster.local:27017" 
         imagePullPolicy: Always
         resources:
           requests:

@@ -11,7 +11,8 @@ app.use(cors());
 app.use(express.json());
 
 
-mongoose.connect('mongodb://mongo:27017/appointments', { useNewUrlParser: true, useUnifiedTopology: true });
+const mongodb_url = process.env.MONGODB_URL || 'mongo:27017'
+mongoose.connect(`mongodb://${mongodb_url}/appointments?replicaSet=rs0`, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const AppointmentSchema = new mongoose.Schema({
