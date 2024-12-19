@@ -317,14 +317,17 @@ kubectl get pods -n kube-system
         - Initial state before the load test
 
             - Pods in running state
+
             ![Initial Pods](/screenshots/Initial-running-pods.png) 
 
             ![Initial Pods State](/screenshots/intial-top-pods.png)
 
             - Pod CPU Utilization 
+
             ![Initial Pod CPU Utilization](/screenshots/initial-pod-cpu-utilization.png)
 
             - Pod Memory Utilization
+            
             ![Initial Pod Memory Utilization](/screenshots/initial-pod-memory-utilization.png)
 
         - Light load (e.g., 10 concurrent users).
