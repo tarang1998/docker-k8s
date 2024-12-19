@@ -324,10 +324,10 @@ kubectl get pods -n kube-system
 
             - Pod CPU Utilization 
 
-            ![Initial Pod CPU Utilization](/screenshots/initial-pod-cpu-utilization.png)
+            ![Initial Pod CPU Utilization](/screenshots/initial-pod-cpu-utilization-1.png)
 
             - Pod Memory Utilization
-            
+
             ![Initial Pod Memory Utilization](/screenshots/initial-pod-memory-utilization.png)
 
         - Light load (e.g., 10 concurrent users).
@@ -339,6 +339,15 @@ kubectl get pods -n kube-system
 
             ![Light Load Testing - Apache Jmeter](/screenshots/light-load-testing-apache-jmeter.png)
 
+            - The metrics collected while the test is ongoing
+
+                - Pod CPU Utilization
+                ![Light Load Testing Pod CPU Utilization](/screenshots/light-load-testing-pod-cpu-utilization.png.png)
+
+                - Pod Memory Utilization
+                ![Light Load Testing Pod Memory Utilization](/screenshots/light-load-testing-pod-memory-utilization.png)
+
+                ![Light Load Testing](/screenshots/light-load-testing-kubectl-top-pods.png)
 
            
 
