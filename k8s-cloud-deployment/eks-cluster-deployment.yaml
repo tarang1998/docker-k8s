@@ -34,10 +34,10 @@ managedNodeGroups:
   - name: ng-1
     labels: { role: workers }
     instanceType: t3.small
-    desiredCapacity: 3
+    desiredCapacity: 5
     volumeSize: 20 
     minSize: 2
-    maxSize: 5
+    maxSize: 7
     ssh:
       allow: true
       publicKeyName : SSH1 # The access key should be present in the same region as the EKS Cluster
@@ -56,8 +56,13 @@ iam:
         namespace: amazon-cloudwatch
       roleName: aws-cloudwatch-agent
       attachPolicyARNs:
-        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy # Attach the CloudWatchAgentServerPolicy to the service account role
       roleOnly: true # Ensure only the role is created without modifying the default policies
+
+  # IAM role for the worker nodes
+  nodeGroup:
+    attachPolicyARNs:
+      - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy  # Attach the policy to the worker node role
 
 
   
@@ -83,7 +88,7 @@ addons:
     wellKnownPolicies:
       ebsCSIController: true 
   - name: amazon-cloudwatch-observability
-    serviceAccountRoleArn: arn:aws:iam::448049797968:role/aws-cloudwatch-agent
+    # serviceAccountRoleArn: arn:aws:iam::448049797968:role/aws-cloudwatch-agent
 
 # Enable CloudWatch logging
 cloudWatch:

@@ -206,14 +206,71 @@ kubectl get pods -n kube-system
 
 
 ### Load Testing an EKS Deployment for Key Metrics
+
 - Scope of Work
     - Latency: Measure the response time under different load conditions.
     - Throughput: Determine the number of requests processed per second.
     - Error Rate: Monitor for failed requests or system errors during the tests.
     - Resource Utilization: Analyze CPU and memory usage on the EKS pods during testing.
  
-- Load Testing
-    - Tool Used : Apache JMeter
+- Load Testing, Monitoring and Metrics Collection
+
+    - Tool Used : Apache JMeter, Prometheus, Grafana, AWS CloudWatch
+
+    - Set up monitoring tools, such as Prometheus, Grafana, or AWS CloudWatch, to collect and visualize metrics.
+
+        - Setting up AWS CloudWatch
+
+            - Refer to the following documentation : https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS-addon.html 
+
+            - Set up the necessary permissions by attaching the CloudWatchAgentServerPolicy IAM policy to your worker nodes. This is specified in the cluster creation config file
+
+            - Install amazon-cloudwatch-observability add-on in the EKS cluster. This is also specified in the cluster creation config file
+
+            ![Cloud Watch Observability Addon](/screenshots/amazon-cloud-watch-addon.png)
+
+            - Navigate to cloud Watch > Insights > Container Insights 
+
+            ![Container Insights](/screenshots/container-insights.png)
+
+        - Setting up Prometheus
+
+            - Refer the following AWS Documentation : https://docs.aws.amazon.com/eks/latest/userguide/deploy-prometheus.html 
+
+            - Create the prometheus namespace 
+            ```
+            kubectl create namespace prometheus
+            ```
+
+            - Add the prometheus-community chart repository.
+            ```
+            helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+            ``` 
+
+            - Deploy Prometheus 
+            ```
+            helm upgrade -i prometheus prometheus-community/prometheus --namespace prometheus --set alertmanager.persistence.storageClass="gp2" --set server/persistentVolume.storageClass="gp2"
+            ```
+            ![Prometheus Deployment](/screenshots/prometheus-deployment.png)
+
+            - Verify that all of the Pods in the prometheus namespace are in the READY state.
+            ```
+            kubectl get pods -n prometheus
+            ```
+            ![Pods namespace Grafana](/screenshots/kubectl-get-pods-n-prometheus.png)
+
+            - Use kubectl to port forward the Prometheus console to your local machine
+            ```
+            kubectl --namespace=prometheus port-forward deploy/prometheus-server 9090
+            ```
+
+            - Access the Prometheus Console : http://localhost:9090 
+            ![Prometheus Console](/screenshots/prometheus-console.png)
+
+
+
+
+
 
 
     - Load scenarios:
@@ -226,7 +283,6 @@ kubectl get pods -n kube-system
         - Test durations should be sufficient to gather meaningful data (e.g., 10 minutes per scenario).
 
     - Monitoring and Metrics Collection
-        - Set up monitoring tools, such as Prometheus, Grafana, or AWS CloudWatch, to collect and visualize metrics.
         - Capture pod-level CPU and memory utilization during load testing.
 
 - Reporting and Analysis
