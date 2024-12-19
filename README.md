@@ -367,15 +367,19 @@ kubectl get pods -n kube-system
 
                 The Graphical representation of response times over the test duration.
 
+            - Key Observations
+
+                - The EKS cluster is able to handle light load quite efficiently with the current configuration.
+                - The pod replicas for the front-end and the backend services remain the same during the load testing.
+                - The error rate is at 0%
+                - The Throughput is 291.6 request/second
+                - The average response time is 34ms, min is 15ms, max is 655ms
+                - The request latency varies from 15ms - 655ms
+                - 90% of the request recieved response within 41ms, 95% within 47ms, 99% within 91ms
                 
-
-
-           
-
-
-
-
         - Medium load (e.g., 50 concurrent users).
+
+        
         - Heavy load (e.g., 200+ concurrent users).
         - Test durations should be sufficient to gather meaningful data (e.g., 10 minutes per scenario).
 
