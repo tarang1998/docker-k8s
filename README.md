@@ -138,6 +138,10 @@ docker push <backendRepositoryUri>:latest
 
 ### Setting up the EKS Cluster
 
+- Resources 
+    - https://eksctl.io/usage/creating-and-managing-clusters/
+    - https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
+    - https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-EKS-addon.html
 
 - Navigate to the directory 'k8s-cloud-deployment', and use the command: 
 ```
@@ -266,6 +270,48 @@ kubectl get pods -n kube-system
 
             - Access the Prometheus Console : http://localhost:9090 
             ![Prometheus Console](/screenshots/prometheus-console.png)
+
+        - Setting Up Grafana 
+
+            - Refer the following documentation : https://grafana.com/docs/grafana/latest/setup-grafana/installation/helm/ 
+
+            - Set up Grafana helm repository
+            ```
+            helm repo add grafana https://grafana.github.io/helm-charts
+            ```
+
+            - Create namespace grafana 
+            ```
+            kubectl create namespace grafana
+            ```
+
+            - Deploy the grafana helm chart
+            ```
+            helm install my-grafana grafana/grafana --namespace grafana
+            ```
+
+            - Check the status of the deployment 
+            ```
+            kubectl get all -n grafana
+            ```
+            ![Grafana Deployment](/screenshots/grafana-deployment.png)
+
+            - Get the grafana admin password in windows
+            ```
+            $secret = kubectl get secret --namespace grafana my-grafana -o jsonpath="{.data.admin-password}"
+            [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($secret))
+            ```
+            ![Grafana Password](/screenshots/grafana-password.png)
+
+            - Run the following port forwarding command to direct the Grafana pod to listen to port 3000
+            ```
+            kubectl --namespace monitoring port-forward $POD_NAME 3000
+            ```
+
+            - Access the application : http://localhost:3000
+            ![Grafana Application](/screenshots/grafana-application.png)
+
+
 
 
 
