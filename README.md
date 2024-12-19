@@ -312,20 +312,38 @@ kubectl get pods -n kube-system
             ![Grafana Application](/screenshots/grafana-application.png)
 
 
-
-
-
-
-
-
-
     - Load scenarios:
+
+        - Initial state before the load test
+
+            - Pods in running state
+            ![Initial Pods](/screenshots/Initial-running-pods.png) 
+
+            ![Initial Pods State](/screenshots/intial-top-pods.png)
+
+            - Pod CPU Utilization 
+            ![Initial Pod CPU Utilization](/screenshots/initial-pod-cpu-utilization.png)
+
+            - Pod Memory Utilization
+            ![Initial Pod Memory Utilization](/screenshots/initial-pod-memory-utilization.png)
+
         - Light load (e.g., 10 concurrent users).
 
+            - Apache Jmeter configs
+                - Number of threads (users) : 10 
+                - Ramp-up period (seconds) : 5
+                - Loop Count : Infinite
+
+            ![Light Load Testing - Apache Jmeter](/screenshots/light-load-testing-apache-jmeter.png)
 
 
-            - Medium load (e.g., 50 concurrent users).
-            - Heavy load (e.g., 200+ concurrent users).
+           
+
+
+
+
+        - Medium load (e.g., 50 concurrent users).
+        - Heavy load (e.g., 200+ concurrent users).
         - Test durations should be sufficient to gather meaningful data (e.g., 10 minutes per scenario).
 
     - Monitoring and Metrics Collection
