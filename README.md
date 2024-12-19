@@ -342,10 +342,11 @@ kubectl get pods -n kube-system
             - The metrics collected while the test is ongoing
 
                 - Pod CPU Utilization
+                
                 ![Light Load Testing Pod CPU Utilization](/screenshots/light-load-testing-pod-cpu-utilization.png)
 
                 - Pod Memory Utilization
-                
+
                 ![Light Load Testing Pod Memory Utilization](/screenshots/light-load-testing-pod-memory-utilization.png)
 
                 ![Light Load Testing](/screenshots/light-load-testing-kubectl-top-pods.png)
