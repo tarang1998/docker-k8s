@@ -342,7 +342,7 @@ kubectl get pods -n kube-system
             - The metrics collected while the test is ongoing
 
                 - Pod CPU Utilization
-                
+
                 ![Light Load Testing Pod CPU Utilization](/screenshots/light-load-testing-pod-cpu-utilization.png)
 
                 - Pod Memory Utilization
@@ -350,6 +350,25 @@ kubectl get pods -n kube-system
                 ![Light Load Testing Pod Memory Utilization](/screenshots/light-load-testing-pod-memory-utilization.png)
 
                 ![Light Load Testing](/screenshots/light-load-testing-kubectl-top-pods.png)
+
+                - Some key insights from apache jmeter while load testing for 10 min
+
+                ![Light Load Result Table](/screenshots/light-load-result-table.png)
+
+                ![Light Load Summary Report](/screenshots/light-load-summary-report.png)
+
+                The summary report provides high-level statistics, such as average latency, throughput, and error percentage.
+
+                ![Light Load Aggregate Report](/screenshots/light-load-aggregate-report.png)
+
+                The aggregate report shows aggregated statistics, including throughput, response time, and error percentage.
+
+                ![Light Load Response Time Graph](/screenshots/light-load-response-time-graph.png)
+
+                The Graphical representation of response times over the test duration.
+
+                
+
 
            
 
