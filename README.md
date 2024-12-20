@@ -314,6 +314,10 @@ kubectl get pods -n kube-system
 
     - Load scenarios:
 
+        - The load testing script used : [LoadTesting.jmx](./LoadTesting.jmx)
+
+        ![Apache Jmeter Test Plans](/screenshots/apachejmetertests.png)
+
         - Initial state before the load test
 
             - Pods in running state
