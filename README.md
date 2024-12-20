@@ -351,7 +351,7 @@ kubectl get pods -n kube-system
 
                 ![Light Load Testing](/screenshots/light-load-testing-kubectl-top-pods.png)
 
-                - Some key insights from apache jmeter while load testing for 10 min
+                - Some key insights from apache jmeter while load testing for 13 min
 
                 ![Light Load Result Table](/screenshots/light-load-result-table.png)
 
@@ -373,13 +373,63 @@ kubectl get pods -n kube-system
                 - The pod replicas for the front-end and the backend services remain the same during the load testing.
                 - The error rate is at 0%
                 - The Throughput is 291.6 request/second
-                - The average response time is 34ms, min is 15ms, max is 655ms
-                - The request latency varies from 15ms - 655ms
-                - 90% of the request recieved response within 41ms, 95% within 47ms, 99% within 91ms
+                - The average response time is 34 ms, min is 15 ms, max is 655 ms
+                - The request latency varies from 15 ms - 655 ms
+                - 90% of the request recieved response within 41 ms, 95% within 47 ms, 99% within 91 ms
                 
         - Medium load (e.g., 50 concurrent users).
 
-        
+            - Apache Jmeter configs
+                - Number of threads (users) : 50 
+                - Ramp-up period (seconds) : 5
+                - Loop Count : Infinite
+
+            ![Medium Load Testing - Apache Jmeter](/screenshots/medium-load-testing-apache-jmeter.png)
+
+            - The metrics collected while the test is ongoing
+
+                - Pod CPU Utilization
+
+                ![Medium Load Testing Pod CPU Utilization](/screenshots/medium-load-pod-cpu-utilization.png)
+
+                - Pod Memory Utilization
+
+                ![Medium Load Testing Pod Memory Utilization](/screenshots/light-load-testing-pod-memory-utilization.png)
+
+                
+                ![Medium Load Testing ](/screenshots/medium-load-pods.png)
+
+
+                ![Medium Load Testing ](/screenshots/medium-load-top-pods.png)
+
+                - Some key insights from apache jmeter while load testing for 15 min
+
+                ![Medium Load Result Table](/screenshots/medium-load-result-table.png)
+
+                ![Medium Load Summary Report](/screenshots/medium-load-summary-report.png)
+
+                The summary report provides high-level statistics, such as average latency, throughput, and error percentage.
+
+                ![Medium Load Aggregate Report](/screenshots/medium-load-aggregate-report.png)
+
+                The aggregate report shows aggregated statistics, including throughput, response time, and error percentage.
+
+                ![Medium Load Response Time Graph](/screenshots/medium-load-response-time-graph.png)
+
+                The Graphical representation of response times over the test duration.
+
+            - Key Observations
+
+                - The EKS cluster is able to handle light load quite efficiently with the current configuration.
+                - The pod replicas for the front-end and the backend services remain the same during the load testing.
+                - The error rate is at 0%
+                - The Throughput is 291.6 request/second
+                - The average response time is 34 ms, min is 15 ms, max is 655 ms
+                - The request latency varies from 15 ms - 655 ms
+                - 90% of the request recieved response within 41 ms, 95% within 47 ms, 99% within 91 ms
+                
+
+
         - Heavy load (e.g., 200+ concurrent users).
         - Test durations should be sufficient to gather meaningful data (e.g., 10 minutes per scenario).
 
