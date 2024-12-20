@@ -351,6 +351,8 @@ kubectl get pods -n kube-system
 
                 ![Light Load Testing](/screenshots/light-load-testing-kubectl-top-pods.png)
 
+                The number of pods remain the same - no autoscaling takes place. The existing pods are capable to handle the requests
+
                 - Some key insights from apache jmeter while load testing for 13 min
 
                 ![Light Load Result Table](/screenshots/light-load-result-table.png)
@@ -373,7 +375,7 @@ kubectl get pods -n kube-system
                 - The pod replicas for the front-end and the backend services remain the same during the load testing.
                 - The error rate is at 0%
                 - The Throughput is 291.6 request/second
-                - The average response time is 34 ms, min is 15 ms, max is 655 ms
+                - The average response time is 34 ms.
                 - The request latency varies from 15 ms - 655 ms
                 - 90% of the request recieved response within 41 ms, 95% within 47 ms, 99% within 91 ms
                 
@@ -392,6 +394,10 @@ kubectl get pods -n kube-system
 
                 ![Medium Load Testing Pod CPU Utilization](/screenshots/medium-load-pod-cpu-utilization.png)
 
+
+                ![Medium Load Testing Pod CPU Utilization Over Limit](/screenshots/medium-load-pod-cpu-over-limit.png)
+
+
                 - Pod Memory Utilization
 
                 ![Medium Load Testing Pod Memory Utilization](/screenshots/light-load-testing-pod-memory-utilization.png)
@@ -401,6 +407,7 @@ kubectl get pods -n kube-system
 
 
                 ![Medium Load Testing ](/screenshots/medium-load-top-pods.png)
+
 
                 - Some key insights from apache jmeter while load testing for 15 min
 
@@ -420,18 +427,16 @@ kubectl get pods -n kube-system
 
             - Key Observations
 
-                - The EKS cluster is able to handle light load quite efficiently with the current configuration.
-                - The pod replicas for the front-end and the backend services remain the same during the load testing.
+                - The EKS cluster is able to handle light load quite efficiently with the current configuration without any failed request.
+                - The frontend service pods scale upto the max limit : 5 , to ensure the average pod cpu utilization is at 50m
                 - The error rate is at 0%
-                - The Throughput is 291.6 request/second
-                - The average response time is 34 ms, min is 15 ms, max is 655 ms
-                - The request latency varies from 15 ms - 655 ms
-                - 90% of the request recieved response within 41 ms, 95% within 47 ms, 99% within 91 ms
+                - The Throughput is 1408.7 request/second
+                - The average response time is 35 ms.
+                - The request latency varies from 14 ms - 764 ms
+                - 90% of the request recieved response within 44 ms, 95% within 48 ms, 99% within 71 ms
                 
 
-
         - Heavy load (e.g., 200+ concurrent users).
-        - Test durations should be sufficient to gather meaningful data (e.g., 10 minutes per scenario).
 
     - Monitoring and Metrics Collection
         - Capture pod-level CPU and memory utilization during load testing.
