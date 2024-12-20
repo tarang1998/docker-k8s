@@ -459,9 +459,6 @@ kubectl get pods -n kube-system
 
                 ![Heavy Load Testing Pod Memory Utilization](/screenshots/heavy-load-pod-memory-utitlization.png)
 
-                
-                ![Heavy Load Testing ](/screenshots/heavy-load-pods.png)
-
 
                 ![Heavy Load Testing ](/screenshots/heavy-load-top-pods.png)
 
@@ -484,13 +481,12 @@ kubectl get pods -n kube-system
 
             - Key Observations
 
-                - The EKS cluster is able to handle medium load quite efficiently with the current configuration without any failed request.
+                - The EKS cluster is able to handle heavy load efficiently with the current configuration without any failed request.
                 - The frontend service pods scale up to the max limit : 5 , to ensure the average pod cpu utilization is at 50m
                 - The error rate is at 0%
-                - The Throughput is 1408.7 request/second
-                - The average response time is 35 ms.
-                - The request latency varies from 14 ms - 764 ms
-                - 90% of the request received response within 44 ms, 95% within 48 ms, 99% within 71 ms
+                - The Throughput is 3698.4 request/second
+                - The average response time is 64 ms.
+                - 90% of the request received response within 78 ms, 95% within 112 ms, 99% within 388 ms
                 
 
 
