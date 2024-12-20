@@ -377,7 +377,7 @@ kubectl get pods -n kube-system
                 - The Throughput is 291.6 request/second
                 - The average response time is 34 ms.
                 - The request latency varies from 15 ms - 655 ms
-                - 90% of the request recieved response within 41 ms, 95% within 47 ms, 99% within 91 ms
+                - 90% of the request received response within 41 ms, 95% within 47 ms, 99% within 91 ms
                 
         - Medium load (e.g., 50 concurrent users).
 
@@ -427,31 +427,72 @@ kubectl get pods -n kube-system
 
             - Key Observations
 
-                - The EKS cluster is able to handle light load quite efficiently with the current configuration without any failed request.
-                - The frontend service pods scale upto the max limit : 5 , to ensure the average pod cpu utilization is at 50m
+                - The EKS cluster is able to handle medium load quite efficiently with the current configuration without any failed request.
+                - The frontend service pods scale up to the max limit : 5 , to ensure the average pod cpu utilization is at 50m
                 - The error rate is at 0%
                 - The Throughput is 1408.7 request/second
                 - The average response time is 35 ms.
                 - The request latency varies from 14 ms - 764 ms
-                - 90% of the request recieved response within 44 ms, 95% within 48 ms, 99% within 71 ms
+                - 90% of the request received response within 44 ms, 95% within 48 ms, 99% within 71 ms
                 
 
         - Heavy load (e.g., 200+ concurrent users).
 
-    - Monitoring and Metrics Collection
-        - Capture pod-level CPU and memory utilization during load testing.
+            - Apache Jmeter configs
+                - Number of threads (users) : 250 
+                - Ramp-up period (seconds) : 10
+                - Loop Count : Infinite
 
-- Reporting and Analysis
-    - Summarize your findings in a detailed report, including:
-        - Graphs and tables of latency, throughput, error rates, and resource utilization.
-        - Key observations about system behavior under different load conditions.
-        - Recommendations for optimizing the application or cluster configuration based on test results.
+            ![Heavy Load Testing - Apache Jmeter](/screenshots/heavy-load-testing-apache-jmeter.png)
 
-- Documentation
-Provide a step-by-step guide to replicate your tests, including:
-Tools and configurations used.
-Kubernetes manifests or Helm charts.
-Load testing scripts and test plans.
+            - The metrics collected while the test is ongoing
+
+                - Pod CPU Utilization
+
+                ![Heavy Load Testing Pod CPU Utilization](/screenshots/heavy-load-pod-cpu-utilization.png)
+
+
+                ![Heavy Load Testing Pod CPU Utilization Over Limit](/screenshots/heavy-load-pod-cpu-utilization-over-pod-limit.png)
+
+
+                - Pod Memory Utilization
+
+                ![Heavy Load Testing Pod Memory Utilization](/screenshots/heavy-load-pod-memory-utitlization.png)
+
+                
+                ![Heavy Load Testing ](/screenshots/heavy-load-pods.png)
+
+
+                ![Heavy Load Testing ](/screenshots/heavy-load-top-pods.png)
+
+
+                - Some key insights from apache jmeter while load testing for 15 min
+
+                ![Heavy Load Result Table](/screenshots/heavy-load-result-table.png)
+
+                ![Heavy Load Summary Report](/screenshots/heavy-load-summary-report.png)
+
+                The summary report provides high-level statistics, such as average latency, throughput, and error percentage.
+
+                ![Heavy Load Aggregate Report](/screenshots/heavy-load-aggregate-report.png)
+
+                The aggregate report shows aggregated statistics, including throughput, response time, and error percentage.
+
+                ![Heavy Load Response Time Graph](/screenshots/heavy-load-response-time-graph.png)
+
+                The Graphical representation of response times over the test duration.
+
+            - Key Observations
+
+                - The EKS cluster is able to handle medium load quite efficiently with the current configuration without any failed request.
+                - The frontend service pods scale up to the max limit : 5 , to ensure the average pod cpu utilization is at 50m
+                - The error rate is at 0%
+                - The Throughput is 1408.7 request/second
+                - The average response time is 35 ms.
+                - The request latency varies from 14 ms - 764 ms
+                - 90% of the request received response within 44 ms, 95% within 48 ms, 99% within 71 ms
+                
+
 
 ### Clean Up 
 
